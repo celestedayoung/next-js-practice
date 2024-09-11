@@ -1,4 +1,6 @@
 import style from "./index.module.css";
+import SearchableLayout from "@/components/searchable-layout";
+import { ReactNode } from "react";
 
 export default function Home() {
   return (
@@ -8,3 +10,8 @@ export default function Home() {
     </>
   );
 }
+
+// 특정 페이지에서만 적용되는 레이아웃을 감싸주는 함수
+Home.getLayout = (page: ReactNode) => {
+  return <SearchableLayout>{page}</SearchableLayout>;
+};
