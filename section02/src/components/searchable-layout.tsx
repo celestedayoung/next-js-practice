@@ -11,9 +11,9 @@ export default function SearchableLayout({
 }) {
   const router = useRouter();
 
-  const [search, setSearch] = useState();
+  const [search, setSearch] = useState("");
 
-  const { q } = router.query as string;
+  const q = router.query.q as string;
 
   // 검색어가 input에 남아있도록
   useEffect(() => {
