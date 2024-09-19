@@ -20,7 +20,7 @@ export const getServerSideProps = async () => {
 };
 
 // 2. 페이지 컴포넌트가 실행된다.
-// 서버에서 한 번, 수화 과정에서 한 번, 총 두 번 실행된다.
+// 서버에서 한 번, hydration 과정에서 한 번, 총 두 번 실행된다.
 export default function Home({
   allBooks,
   recoBooks,

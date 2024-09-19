@@ -6,7 +6,7 @@ export default async function fetchBooks(q?: string): Promise<BookData[]> {
 
   // q가 있으면 url을 검색 url로 바꿔준다.
   if (q) {
-    url += `/search?1=${q}`;
+    url += `/search?q=${q}`;
   }
 
   try {
