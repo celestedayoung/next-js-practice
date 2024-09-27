@@ -1,15 +1,15 @@
 import BookItem from "@/components/book-item";
 import style from "./page.module.css";
 import { BookData } from "@/types";
+import delay from "@/util/delay";
+import { Suspense } from "react";
+import BookItemSkeleton from "@/components/skeleton/book-item-skeleton";
+import BookListSkeleton from "@/components/skeleton/book-list-skeleton";
 
-// 특정 페이지의 유형을 강제로 Static or Dynamic 페이지로 설정
-// auto(기본): 아무 것도 강제하지 않는다.
-// force-dynamic: 강제로 dynamic 페이지로 설정
-// force-static: 강제로 static 페이지로 설정
-// error: 강제로 static 페이지로 설정 (static으로 설정하면 안되는 이유가 있다면 빌드 에러 발생)
-export const dynamic = "auto";
+export const dynamic = "force-dynmaic";
 
 async function AllBooks() {
+  await delay(1500);
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book`,
     { cache: "force-cache" }
@@ -25,6 +25,7 @@ async function AllBooks() {
   );
 }
 async function RecoBooks() {
+  await delay(3000);
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/random`,
     { next: { revalidate: 3 } }
@@ -45,11 +46,15 @@ export default function Home() {
     <div className={style.container}>
       <section>
         <h3>지금 추천하는 도서</h3>
-        <RecoBooks />
+        <Suspense fallback={<BookListSkeleton count={3} />}>
+          <RecoBooks />
+        </Suspense>
       </section>
       <section>
         <h3>등록된 모든 도서</h3>
-        <AllBooks />
+        <Suspense fallback={<BookListSkeleton count={10} />}>
+          <AllBooks />
+        </Suspense>
       </section>
     </div>
   );

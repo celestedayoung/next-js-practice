@@ -1,11 +1,13 @@
 import BookItem from "@/components/book-item";
+import BookListSkeleton from "@/components/skeleton/book-list-skeleton";
 import { BookData } from "@/types";
 import delay from "@/util/delay";
+import { Suspense } from "react";
 
-async function SearchResult() {
+async function SearchResult({ q }: { q: string }) {
   await delay(3000);
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/search?q=${searchParams.q}`,
+    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/search?q=${q}`,
     { cache: "force-cache" }
   );
 
@@ -22,11 +24,19 @@ async function SearchResult() {
   );
 }
 
-export default async function Page({
-  // query string과 같이 동적인 값에 의존하므로 static page로 만들기 어렵다.
+export default function Page({
   searchParams,
 }: {
   searchParams: {
     q?: string;
   };
-}) {}
+}) {
+  return (
+    <Suspense
+      key={searchParams.q || ""}
+      fallback={<BookListSkeleton count={5} />}
+    >
+      <SearchResult q={searchParams.q || ""} />
+    </Suspense>
+  );
+}
